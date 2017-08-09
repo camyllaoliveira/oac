@@ -1,0 +1,33 @@
+# c implementation 
+# int fibonacci (int n)
+# 	if (n <= 1)
+# 		return n;
+#	else return fibonacci(n - 1) + fibonacci (n - 2);
+
+fibonacci:
+	bgt $a0, 1, fib_recursive	# se o argumento for maior do que 1, vai para a função recursiva fib_recursive
+	move $v0, $a0			# caso base, se o argumento for menor ou igual a 1, retorne o argumento.
+	jr $ra				# volta para a chamada da função
+	
+fib_recursive:
+	sub $sp, $sp, 12		# ajuste na pilha para empilhar 3 elementos
+	sw $ra, 0($sp)			# salva $ra na pilha
+	sw $a0, 4($sp)			# salva $a0 (no caso n) na pilha
+	
+	# chamada de fibonacci(n-1)
+	sub $a0, $a0, 1			# $a0 = $a0 - 1 (em c, nosso n - 1)
+	jal fibonacci			# chamada de fibonacci para o argumento n-1
+	lw $a0, 4($sp)			# restaura $a0 (no caso n)
+	sw $v0, 8($sp)			# salva o retorno de fibonacci(n-1)
+	
+	# chamada de fibonacci(n-2)
+	sub $a0, $a0, 2			# $a0 = $a0 - 2 (em c, nosso n - 2)
+	jal fibonacci			# chamada de fibonacci para o argumento n-2
+	
+	# salvando o retorno		
+	lw $t0, 8($sp)			# $t0 = retorno de fibonacci (n-1)
+	sw $v0, $v0, $t0		# salva $v0 + $t0 = fibonacci (n-2) + fibonacci (n-1)
+	lw $ra, 0($sp)			# restaura $ra 
+	add $sp, $sp, 12		
+	jr $ra				# volta pra a chamada da função
+	

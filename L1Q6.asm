@@ -1,35 +1,40 @@
-# Universidade Federal de Alagoas - Instituto de Computação
-# Lista 1 - Questão 6 - Organização e Arquitetura de Computadores
-# Professor: Erick Barboza
-# Aluno(a): Camylla Oliveira Santos 
-# Curso: Engenharia da Computação
-.data
+# c implementation 
+# int fibonacci (int n)
+# 	if (n <= 1)
+# 		return n;
+#	else return fibonacci(n - 1) + fibonacci (n - 2);
 
-n: 	.word 1
-return: .space 4
-
-.text
 main:
-	lw $s0, n		# s0 = n
-	move $a0, $s0		# a0 = s0
-	la $v0, return		# v0 = return
-	
+	addi $a0, $zero, 5		# argumento recebe N (inteiro)
+	jal fibonacci			# chamada da função
+	j exit
+
+
 fibonacci:
-	addi $t0, $zero, 1	# t0 = zero + 1
-	beqz $a0, if		# a0 == 0, vá para if
-	beq $a0, , if		# a0 == 1, vá para elseif
+	bgt $a0, 1, fib_recursive	# se o argumento for maior do que 1, vai para a função recursiva fib_recursive
+	move $v0, $a0			# caso base, se o argumento for menor ou igual a 1, retorne o argumento.
+	jr $ra				# volta para a chamada da função
 	
-
-if:
-	addi $v0, $zero, 1 	# v0 = zero + 1
-	j end
-
-elseif:
-	add $v0, $zero, $zero	# v0 = zero + zero
-	j end
-end: 
+fib_recursive:
+	sub $sp, $sp, 12		# ajuste na pilha para empilhar 3 elementos
+	sw $ra, 0($sp)			# salva $ra na pilha
+	sw $a0, 4($sp)			# salva $a0 (no caso n) na pilha
 	
+	# chamada de fibonacci(n-1)
+	sub $a0, $a0, 1			# $a0 = $a0 - 1 (em c, nosso n - 1)
+	jal fibonacci			# chamada de fibonacci para o argumento n-1
+	lw $a0, 4($sp)			# restaura $a0 (no caso n)
+	sw $v0, 8($sp)			# salva o retorno de fibonacci(n-1)
 	
+	# chamada de fibonacci(n-2)
+	sub $a0, $a0, 2			# $a0 = $a0 - 2 (em c, nosso n - 2)
+	jal fibonacci			# chamada de fibonacci para o argumento n-2
 	
+	# salvando o retorno		
+	lw $t0, 8($sp)			# $t0 = retorno de fibonacci (n-1)
+	add $v0, $v0, $t0		# salva $v0 + $t0 = fibonacci (n-2) + fibonacci (n-1)
+	lw $ra, 0($sp)			# restaura $ra 
+	add $sp, $sp, 12		
+	jr $ra				# volta pra a chamada da função
 	
-	
+exit:

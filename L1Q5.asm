@@ -1,4 +1,3 @@
-# caso teste com num = 2 dando erro
 .data
 num1:	.word -9
 num2: 	.word 3

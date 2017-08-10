@@ -6,14 +6,14 @@
 
 main:
 	addi $a0, $zero, 5		# argumento recebe N (inteiro)
-	jal fibonacci			# chamada da função
+	jal fibonacci			# chamada da funÃ§Ã£o
 	j exit
 
 
 fibonacci:
-	bgt $a0, 1, fib_recursive	# se o argumento for maior do que 1, vai para a função recursiva fib_recursive
+	bgt $a0, 1, fib_recursive	# se o argumento for maior do que 1, vai para a funÃ§Ã£o recursiva fib_recursive
 	move $v0, $a0			# caso base, se o argumento for menor ou igual a 1, retorne o argumento.
-	jr $ra				# volta para a chamada da função
+	jr $ra				# volta para a chamada da funÃ§Ã£o
 	
 fib_recursive:
 	sub $sp, $sp, 12		# ajuste na pilha para empilhar 3 elementos
@@ -35,6 +35,6 @@ fib_recursive:
 	add $v0, $v0, $t0		# salva $v0 + $t0 = fibonacci (n-2) + fibonacci (n-1)
 	lw $ra, 0($sp)			# restaura $ra 
 	add $sp, $sp, 12		
-	jr $ra				# volta pra a chamada da função
+	jr $ra				# volta pra a chamada da funÃ§Ã£o.
 	
 exit:

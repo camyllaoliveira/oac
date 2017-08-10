@@ -7,16 +7,16 @@ slt $t1, $s0, $zero	# if (a < 0), t1 = 1 => if (a >= 0), t1 = 0
 beq $t0, $t1, else	# if (((a < b)&&(a < 0)) || ((a > b)&&(a >=0))), goto else
 beq $t0, $zero, elseif	# if (t0 == 0), goto if  => if (a > b), goto if
 addi $s2, $zero, 1	# x = 1;
-j done
+j exit
 
 elseif:
 addi $s2, $zero, 2	# x = 2;
-j done
+j exit
 
 else:
 addi $s2, $zero, 3	# x = 3;
 
-done:
+exit:
 
 
 

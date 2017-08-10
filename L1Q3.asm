@@ -1,3 +1,5 @@
+
+# está errado
 .data  
    string1:    .asciiz "Hello "  
    string2:    .asciiz "World!"  
